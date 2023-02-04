@@ -41,8 +41,19 @@ class Api::QuestionsController < ApplicationController
 
     def update
       @question = Question.find_by(id: question_params[:id])
+      tags = params[:tags]
       if @question
         if @question.update(question_params)
+          Tagging.where(question_id: @question.id).destroy_all
+          if tags.present?
+            tags.each do |tag_name|
+              tag = Tag.find_by_name(tag_name)
+              if tag.nil?
+                tag = Tag.create(name: tag_name)
+              end
+              Tagging.create(tag_id: tag.id, question_id: @question.id)
+            end
+          end
           render :show
         else
           render json: @question.errors.full_messages, status: 422

@@ -49,6 +49,10 @@ const QuestionShow = () => {
     }
   }, [question]);
 
+  useEffect(() => {
+    dispatch(fetchQuestions())
+  },[])
+
   const handleClick = (e) => {
     if (sessionUser) {
       history.push("/questions/ask")
