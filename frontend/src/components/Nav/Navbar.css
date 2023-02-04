@@ -1,0 +1,93 @@
+.nav-box{
+    height: 50px;
+}
+
+.navbar{
+    position: fixed;
+    background-color: #F8F9F9;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    box-shadow: 0 0 10px 0px #CCCCCC;
+    z-index: 99;
+    height: 50px;
+
+}
+
+.nav-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-left{
+    display: flex;
+    margin-left: 40px;
+}
+
+.nav-right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 40px;
+}
+
+.nav-logo{
+    margin-left: 10px;
+}
+
+.nav-search{
+    display: flex;
+}
+
+::placeholder{
+    padding-left: 25px;
+}
+
+.nav-search{
+    width: 400px;
+    margin-right: 10px;
+    height: 33px;
+    margin-bottom: 4px;
+}
+
+.magnifying-glass{
+    height: 33px;
+    position: absolute;
+    right: auto;
+    margin-top: 3px;
+    margin-left: 5px;
+
+
+}
+
+.login{
+    width: 65px;
+    height: 39px;
+    margin-right: 5px;
+    background-color: #e1ecf4;
+    border-radius: 3px;
+    border: 1.5px solid #79A7C7;
+    color: #39739D;
+    box-shadow: inset 0 0.5px 0 0 white;
+}
+
+.login:hover{
+    background-color: #B3D3EA;
+}
+
+.signup{
+    width: 66px;
+    height: 39px;
+    background-color: #0a95ff;
+    color: white;
+    border-radius: 3px;
+    border: 1.5px solid #0a95ff;
+    box-shadow: inset 0 0.5px 0 0 white;
+}
+
+.signup:hover{
+    background-color: #0074CC;
+}
+

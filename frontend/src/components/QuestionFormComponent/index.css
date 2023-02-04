@@ -1,0 +1,154 @@
+.container{
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#content{
+    max-width: 1264px;
+    max-height: 750px;
+    width: 1264px;
+    display: block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.header{
+    background-image: url(https://cdn.sstatic.net/Img/ask/background.svg);
+    background-repeat: no-repeat;
+    background-position: right;
+    display: flex;
+    height: 130px;
+    align-items: center;
+}
+
+.headline{
+    text-align: left;
+    font-size: 27px;
+}
+
+#question-form{
+    padding: 16px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 1px #CCCCCC;
+    width: 800px;
+}
+
+.input-form{
+    width: 100%;
+    height: 33.5938px;
+}
+
+.label-box{
+    margin-bottom: 18px;
+}
+
+.label{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.label-text{
+    font-size: 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+
+textarea{
+    width: 100%;
+    height: 200px;
+}
+
+.body-text{
+    font-size: 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.submit-question{
+    height: 37.7812px;
+    width: 151.828px;
+    background-color: #0A95FF;
+    color: #FFFFFF;
+    padding: 10px;
+    border-radius: 3px;
+    user-select: none;
+    margin-bottom: 20px;
+    border: 1.5px solid #0a95ff;
+    box-shadow: inset 0 0.3px 0 0 white;
+    margin-top: 32px;
+    margin-left: 2px;
+}
+
+.question-and-draft{
+    display: flex;
+    flex-direction: row;
+}
+
+.steps-container{
+    width: 316px;
+    margin-left: 24px;
+    border-color: rgb(214, 217, 220);
+    border-radius: 3px;
+    background-color: #FFFFFF;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 1px #CCCCCC;
+}
+
+.steps{
+    padding: 16px 15px 0 15px;
+    border-top: 1px solid rgb(227, 230, 232);
+}
+
+.steps-instruction .number{
+    font-size: 15px;
+    color: blue;
+}
+
+.step-text{
+    color: black;
+    font-weight: 800;
+}
+
+.steps-title{
+    padding: 12px 15px;
+    color: rgb(82, 89, 96);
+    border-radius: 3px;
+    background-color: rgb(248, 249, 249);
+}
+
+.tags-input-container{
+    display: flex;
+    border: 1px solid;
+    padding: .5em;
+    gap: .5em;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: 37px;
+}
+
+.tag-item{
+    background-color: #e1ecf4;
+    display: inline-block;
+    padding: .5em .75em;
+    border-radius: 2px;
+}
+
+.tag-close{
+    cursor: pointer;
+    color: #39739d;
+    margin-left: 4px;
+    width: 14px;
+    height: 14px;
+}
+
+.tag-close:hover{
+    background-color: green;
+}
+
+.tags-input{
+    flex-grow: 1;
+    flex-wrap: wrap;
+    border: none;
+    outline: none;
+}
