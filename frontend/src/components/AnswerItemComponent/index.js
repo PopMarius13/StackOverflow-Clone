@@ -9,7 +9,7 @@ import Vote from "../VoteComponent";
 const AnswerItem = ({answer}) => {
     const dispatch = useDispatch();
     const { id, description, answererId, createdAt} = answer;
-    const answerer = useSelector(getAnswer(answererId))
+    const answerer = useSelector(getAnswer(id))
     const sessionUser = useSelector(state => state.session.user);
     const date = moment(createdAt).fromNow()
 

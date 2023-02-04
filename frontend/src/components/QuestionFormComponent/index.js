@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import csrfFetch from "../../store/csrf";
-import { fetchQuestion } from "../../store/questions";
+import { fetchQuestions } from "../../store/questions";
 import './index.css'
 
 const QuestionForm = () => {
@@ -27,7 +27,7 @@ const QuestionForm = () => {
         });
         if (res.ok){
             let data = await res.json();
-            dispatch(fetchQuestion(data.question.id));
+            dispatch(fetchQuestions());
             history.push(`${data.question.id}`);
         } 
     };

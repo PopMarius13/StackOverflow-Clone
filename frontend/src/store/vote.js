@@ -3,6 +3,7 @@ import csrfFetch from "./csrf"
 const MAKE_VOTE = '/api/votes';
 const RECEIVE_VOTE = "RECEIVE_VOTE";
 const REMOVE_VOTE = "REMOVE_VOTE";
+const UPDATE_VOTE = "UPDATE_VOTE";
 
 
 export const makeVote = (voterId, postId, vote, type, dispatchPost) => async(dispatch) => {

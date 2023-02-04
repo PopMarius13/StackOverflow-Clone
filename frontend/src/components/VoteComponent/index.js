@@ -33,25 +33,24 @@ const Vote = ({post, sessionUser, isAnswer, dispatchPost}) => {
     }, [initialVote, initialVotes])
 
 
-    const handleClick = (bool) => {
+    const handleClickGray = (bool) => {
+        if(sessionUser.id === post?.authorId || sessionUser.id === post?.answererId) {return}
         if(!sessionUser){return alert("You must be logged in to vote")}
         const has_user_voted = voters.includes(sessionUser.id)
         const user_id = sessionUser.id
-        let response = null
 
         if(has_user_voted) {
             for (const v of Object.values(votes)) {
                 if(v.voterId === sessionUser.id) {
-                    response = dispatch(downVote(v.id, dispatchPost))
+                    dispatch(downVote(v.id, dispatchPost))
                 }
             }
             setVote("")
             setVoters(voters.filter(v => v !== user_id))
-        } else {
-            response = dispatch(makeVote(sessionUser.id, post.id, bool, isAnswer, dispatchPost));
-            setVote(bool)
-            setVoters([...voters, user_id])
         }
+        dispatch(makeVote(sessionUser.id, post.id, bool, isAnswer, dispatchPost));
+        setVote(bool)
+        setVoters([...voters, user_id])
         if(bool){
             setVoteCount(voteCount + 1)
         }else{
@@ -60,14 +59,35 @@ const Vote = ({post, sessionUser, isAnswer, dispatchPost}) => {
     }
 
 
-        return(
-            <div className="vote-container" key={isAnswer ? `answer${post.id}` : `question${post.id}`}>
-                {sessionUser && votes && voters.includes(sessionUser.id) && vote ? <OrangeUpArrow/> : <GrayUpArrow onClick={() => handleClick(true)}/>}
-                <h1 className="vote-count">{voteCount}</h1>
-                {sessionUser && votes && voters.includes(sessionUser.id) && !vote ? <OrangeDownArrow/> : <GrayDownArrow onClick={() => handleClick(false)}/>}
-            </div>
-        )
+    const handleClickOrange = (bool) => {
+        if(sessionUser.id === post?.authorId || sessionUser.id === post?.answererId) {return}
+        if(!sessionUser){return alert("You must be logged in to vote")}
+        const user_id = sessionUser.id
+
+        for (const v of Object.values(votes)) {
+            if(v.voterId === sessionUser.id) {
+                dispatch(downVote(v.id, dispatchPost))
+            }
+        }
+        setVote("")
+        setVoters(voters.filter(v => v !== user_id))
+
+        if(bool){
+            setVoteCount(voteCount + 1)
+        }else{
+            setVoteCount(voteCount - 1)
+        }
     }
+
+
+    return(
+        <div className="vote-container" key={isAnswer ? `answer${post.id}` : `question${post.id}`}>
+            {sessionUser && votes && voters.includes(sessionUser.id) && vote ? <OrangeUpArrow onClick={() => handleClickOrange(false)}/> : <GrayUpArrow onClick={() => handleClickGray(true)}/>}
+            <h1 className="vote-count">{voteCount}</h1>
+            {sessionUser && votes && voters.includes(sessionUser.id) && !vote ? <OrangeDownArrow onClick={() => handleClickOrange(true)}/> : <GrayDownArrow onClick={() => handleClickGray(false)}/>}
+        </div>
+    )
+}
 
 
 

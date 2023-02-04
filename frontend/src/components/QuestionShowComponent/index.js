@@ -42,7 +42,7 @@ const QuestionShow = () => {
 
   useEffect(() => {
     for (const [key, value] of Object.entries(users)) {
-      if (value.id === question.authorId) {
+      if (value.id === question?.authorId) {
         setDisplayName(value.displayName);
       }
     }
@@ -50,7 +50,7 @@ const QuestionShow = () => {
 
   const handleClick = (e) => {
     if (sessionUser) {
-      history.push("/questions/ask");
+      history.push("/questions/ask")
     } else {
       history.push("/login");
     }
