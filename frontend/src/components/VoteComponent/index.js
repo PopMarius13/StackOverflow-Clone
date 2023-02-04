@@ -11,15 +11,15 @@ const Vote = ({post, sessionUser, isAnswer, dispatchPost}) => {
     const dispatch = useDispatch();
     const votes = post.votesAttributes;
 
-    const initialVotes = votes.map((vote) => {return vote.vote ? 1 : -1}).reduce((vote, current) => vote + current, 0)
-    const initialVoters = votes.map((vote) => {return vote.voterId})
+    const initialVotes = votes ? votes.map((vote) => {return vote.vote ? 1 : -1}).reduce((vote, current) => vote + current, 0) : 0
+    const initialVoters = votes ? votes.map((vote) => {return vote.voterId}) : []
     let initialVote = ""
 
     const [voteCount, setVoteCount] = useState()
     const [voters, setVoters] = useState([])
     const [vote, setVote] = useState("");
 
-    if(sessionUser){
+    if(sessionUser && votes){
         for(let i = 0; i < votes.length; i++){
             if(sessionUser.id === votes[i].voterId) initialVote = votes[i].vote;
         }

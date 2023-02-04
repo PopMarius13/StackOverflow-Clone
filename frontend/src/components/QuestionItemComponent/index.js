@@ -13,7 +13,7 @@ const QuestionItem = ({question}) => {
     let editedBy = "";
     const filteredAnswers = [];
 
-    const initialVotes = question ? question.votesAttributes.map((vote) => {return vote.vote ? 1 : -1}).reduce((vote, current) => vote + current, 0) : 0
+    const initialVotes = (question && question.votesAttributes) ? question.votesAttributes.map((vote) => {return vote.vote ? 1 : -1}).reduce((vote, current) => vote + current, 0) : 0
 
     let answers = useSelector(getAnswers).slice();
 
