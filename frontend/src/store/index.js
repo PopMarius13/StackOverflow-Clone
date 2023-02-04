@@ -5,13 +5,15 @@ import questionsReducer from './questions';
 import sessionReducer from './session';
 import usersReducer from './users';
 import votesReducer from './vote';
+import tagsReducer from './tags';
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   users: usersReducer,
   questions: questionsReducer,
   answers: answersReducer,
-  votes: votesReducer
+  votes: votesReducer,
+  tags: tagsReducer
 });
 
 let enhancer;

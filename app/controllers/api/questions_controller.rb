@@ -2,12 +2,28 @@ class Api::QuestionsController < ApplicationController
   
     def index
       @questions = Question.all
+      @taggs = Hash.new
+      @questions.each do |question|
+        taggings = Tagging.where(question_id: question.id)
+        tags = Tag.where(id: taggings.pluck(:tag_id))
+        @taggs[question.id] = tags
+      end
       render :index
     end
   
     def create
       @question = Question.new(question_params)
       if @question.save
+        taggings = params[:taggings]
+
+        taggings.each do |tag|
+          tagDb = Tag.where(name: tag).first
+          if tagDb.nil?
+            tagDb = Tag.create(name: tag)
+          end
+          Tagging.create(tag_id: tagDb.id, question_id: @question.id)
+        end
+
         render 'api/questions/show'
       else
         render json: @question.errors.full_messages, status: 422

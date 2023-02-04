@@ -11,6 +11,7 @@ import { getAnswers } from "../../store/answers";
 import AnswerIndex from "../AnswerIndexComponent";
 import Vote from "../VoteComponent";
 import { getUsers } from "../../store/users";
+import TagsComponent from "../TagIndexComponent/Tags.js"
 
 const QuestionShow = () => {
   window.scrollTo(0, 0);
@@ -90,7 +91,12 @@ const QuestionShow = () => {
             <hr></hr>
             <div className="question-show-bottom" >
               <Vote key={`question${question.id}`} post={question} sessionUser={sessionUser} isAnswer={false} dispatchPost={dispatchQuestion}/>
-              <div className="question-body">{question.body}</div>
+              <div className="question-body">
+                {question.body}
+                <div className="question-tags">
+                  <TagsComponent tags={question?.tagsAttributes} />
+                </div>
+              </div>
             </div>
             {sessionUser && sessionUser.id === question.authorId ? (
               <div className="crud-functions">

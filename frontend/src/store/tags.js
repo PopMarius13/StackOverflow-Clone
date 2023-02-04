@@ -1,73 +1,73 @@
 import csrfFetch from "./csrf";
 
-export const RECEIVE_ANSWERS = "answers/RECEIVE_ANSWERS";
-export const RECEIVE_ANSWER = "answers/RECEIVE_ANSWER";
-export const REMOVE_ANSWER = "answers/REMOVE_ANSWER";
+export const RECEIVE_TAGS = "tags/RECEIVE_TAGS";
+export const RECEIVE_TAG = "tags/RECEIVE_TAG";
+export const REMOVE_TAG = "tags/REMOVE_TAG";
 
-export const receiveAnswers = answers => ({
-    type: RECEIVE_ANSWERS,
-    answers
+export const receiveTags = tags => ({
+    type: RECEIVE_TAGS,
+    tags
 });
 
-export const receiveAnswer = answer => ({
-    type: RECEIVE_ANSWER,
-    answer
+export const receiveTag = tag => ({
+    type: RECEIVE_TAG,
+    tag
 });
 
-export const removeAnswer = answerId => ({
-    type: REMOVE_ANSWER,
-    answerId
+export const removeTag = tagId => ({
+    type: REMOVE_TAG,
+    tagId
 });
 
-export const getAnswer = answerId => ({answers}) => answers ? answers[answerId] : null;
-export const getAnswers = ({answers}) => answers ? Object.values(answers) : [];
+export const getTag = tagId => ({tags}) => tags ? tags[tagId] : null;
+export const getTags = ({tags}) => tags ? Object.values(tags) : [];
 
-export const fetchAnswer = answerId => async dispatch => {
-    const res = await csrfFetch(`/api/answers/${answerId}`);
+export const fetchTag = tagId => async dispatch => {
+    const res = await csrfFetch(`/api/tags/${tagId}`);
     const data = await res.json();
-    dispatch(receiveAnswer(data.answer));
+    dispatch(receiveTag(data.tag));
 };
 
-export const fetchAnswers = () => async dispatch => {
-    const res = await csrfFetch(`/api/answers`);
+export const fetchTags = () => async dispatch => {
+    const res = await csrfFetch(`/api/tags`);
     const data = await res.json();
-    dispatch(receiveAnswers(data));
+    dispatch(receiveTags(data));
 };
 
-export const deleteAnswer = answerId => async dispatch => {
-    await csrfFetch(`/api/answers/${answerId}`, {method: "DELETE"});
-    dispatch(removeAnswer(answerId));
+export const deleteTag = tagId => async dispatch => {
+    await csrfFetch(`/api/tags/${tagId}`, {method: "DELETE"});
+    dispatch(removeTag(tagId));
 };
 
-export const updateAnswer = answer => async dispatch => {
-    const res = await csrfFetch(`/api/answers/${answer.id}`, {
+export const updateTag = tag => async dispatch => {
+    const res = await csrfFetch(`/api/tags/${tag.id}`, {
       method: 'PUT',
-      body: JSON.stringify(answer),
+      body: JSON.stringify(tag),
       headers: {
         'Content-Type': 'application/json'
       }
     });
     const data = await res.json();
-    dispatch(receiveAnswer(data));
+    dispatch(receiveTag(data));
   };
 
 
-const answersReducer = (state= {}, action) => {
+const tagsReducer = (state= {}, action) => {
     Object.freeze(state);
     const nextState = {...state};
     switch (action.type) {
-        case RECEIVE_ANSWERS:
-            return {...state, ...action.answers};
-        case RECEIVE_ANSWER:
-            nextState[action.answer.id] = action.answer;
+        case RECEIVE_TAGS:
+            return {...state, ...action.tags};
+        case RECEIVE_TAG:
+            nextState[action.tag.id] = action.tag;
             return nextState;
-        case REMOVE_ANSWER:
-            delete nextState[action.answerId];
+        case REMOVE_TAG:
+            delete nextState[action.tagId];
             return nextState;
         default:
             return state;
     }
 };
 
-export default answersReducer;
+export default tagsReducer;
 

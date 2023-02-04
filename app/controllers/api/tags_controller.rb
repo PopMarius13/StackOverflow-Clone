@@ -1,7 +1,8 @@
 class Api::TagsController < ApplicationController
 
     def index 
-      @tags = Tag.select(:id,:title,:created_at,"COUNT(*) AS tag_count").left_outer_joins(:questions_tagged).group(:id,:title, :created_at).order("COUNT(*) DESC")
+      # @tags = Tag.select(:id,:title,:created_at,"COUNT(*) AS tag_count").left_outer_joins(:questions_tagged).group(:id,:title, :created_at).order("COUNT(*) DESC")
+      @tags = Tag.all
       render :index
     end
   

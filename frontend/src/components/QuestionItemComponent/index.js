@@ -5,6 +5,7 @@ import { fetchUser, getUser } from "../../store/users";
 import './index.css'
 import moment from 'moment';
 import { fetchAnswers, getAnswers } from "../../store/answers";
+import TagsComponent from "../TagIndexComponent/Tags.js"
 
 const QuestionItem = ({question}) => {
     const { id, title, body, authorId, createdAt, editorId, updatedAt} = question;
@@ -49,13 +50,15 @@ const QuestionItem = ({question}) => {
     return(
             <div className="question-container">
                 <div className="question-stats">
-                    {console.log(question)}
                     <div className="question-index-votes">{initialVotes}</div>
                     <div className="question-index-answers">{filteredAnswers.length} answers</div>
                 </div>
                 <div className="question-content-summary">
                     <Link to={`/questions/${id}`}> <h3 className="question-listing-title">{title}</h3></Link>
                     <div className="question-content-summary-body">{getBody(body)} ...</div>
+                    <div className="tags-content-summary">
+                        <TagsComponent tags={question?.tagsAttributes} />
+                    </div>
                     <div className="question-content-summary-bottom-user-card"><div>{user.displayName} asked {dateTimeAgo}</div> <div className="editor">{}</div></div>
                 </div>
             </div>

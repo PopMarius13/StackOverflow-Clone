@@ -20,7 +20,12 @@ const QuestionForm = () => {
 
     const handleClick = async e => {
         e.preventDefault();
-        const question = {title: title, body: body, author_id: author.id};
+        const question = {
+            title: title,
+            body: body,
+            author_id: author.id,
+            taggings: tags
+        };
         const res = await csrfFetch('/api/questions', {
             method: 'POST',
             body: JSON.stringify(question)
