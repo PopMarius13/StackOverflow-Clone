@@ -33,8 +33,8 @@ export const fetchQuestion = questionId => async dispatch => {
     dispatch(receiveQuestion(data.question));
 };
 
-export const fetchQuestions = (page) => async dispatch => {
-    const res = await csrfFetch(`/api/questions?page=${page}`);
+export const fetchQuestions = (page, order) => async dispatch => {
+    const res = await csrfFetch(`/api/questions?page=${page}&&order=${order}`);
     const data = await res.json();
     dispatch(receiveQuestions(data));
 };

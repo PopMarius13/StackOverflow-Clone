@@ -8,6 +8,9 @@ class Api::QuestionsController < ApplicationController
       @tags[question.id] = tags
     end
 
+    # order
+    sort_question(params[:order])
+
     # pagination
     page = 1
     page = params[:page].to_i unless params[:page] == "undefined" || params[:page] == "null"
@@ -73,7 +76,7 @@ class Api::QuestionsController < ApplicationController
     if @question.nil?
       render json: ['Question cannot be found'], status: 422
     else
-      if current_user.id == @question.author_id 
+      if current_user.id == @question.author_id
         @question.destroy!
         render :show
       else
@@ -85,5 +88,26 @@ class Api::QuestionsController < ApplicationController
   private
   def question_params
     params.require(:question).permit(:editor_id, :title, :body, :author_id, :id, :updated_at)
+  end
+
+  def sort_question(type)
+    case type
+    when "Newest"
+      @questions = @questions.order(:created_at)
+    when "Oldest"
+      @questions = @questions.order(created_at: :desc)
+    when "MostAnswered"
+      @questions = @questions.left_joins(:answers)
+        .select('questions.*, COUNT(answers.id) AS answer_count')
+        .group('questions.id')
+        .order('answer_count DESC')
+    when "LeastAnswered"
+      @questions = @questions.left_joins(:answers)
+        .select('questions.*, COUNT(answers.id) AS answer_count')
+        .group('questions.id')
+        .order('answer_count')
+    else
+      @questions = @questions.order(:created_at)
+    end
   end
 end

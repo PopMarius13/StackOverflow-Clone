@@ -32,7 +32,7 @@ const QuestionIndex = () => {
       setPage(1);
 
     dispatch(clearQuestions());
-    dispatch(fetchQuestions(page))
+    dispatch(fetchQuestions(page, order))
       .catch(() => {
           history.push("/404");
       });
@@ -72,17 +72,18 @@ const QuestionIndex = () => {
 
   const handleChangePage = (currentPage) => {
     setPage(parseInt(currentPage));
-    dispatch(fetchQuestions(page))
+    dispatch(fetchQuestions(currentPage, order))
       .catch(() => {
         history.push("/404");
     });
-
-    if (questions.length > 0)
-      setTotalPages(questions[0].totalPages)
   };
 
   const handleChangeOrder = (order) => {
     setOrder(order);
+    dispatch(fetchQuestions(page, order))
+      .catch(() => {
+        history.push("/404");
+    });
   }
 
   return (
@@ -93,7 +94,7 @@ const QuestionIndex = () => {
           <button onClick={handleClick} className="question-index-button">Ask Question</button>
         </div>
         <div className="filter-buttons">
-          {["Least Answered", "Most Answered", "Oldest", "Newest"].map(opt => (
+          {["LeastAnswered", "MostAnswered", "Oldest", "Newest"].map(opt => (
             <button
               key={opt}
               className={order === opt ? "dark-button" : "light-button"}
