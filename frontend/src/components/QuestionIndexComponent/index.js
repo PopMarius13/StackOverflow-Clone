@@ -4,6 +4,10 @@ import { useHistory } from "react-router-dom";
 import { useQueryParam, StringParam } from "use-query-params";
 import { clearQuestions } from "../../store/questions";
 import QuestionItem from "../QuestionItemComponent";
+import { fetchQuestions } from "../../store/questions";
+import Pagination from 'react-rails-pagination';
+import { getQuestions } from "../../store/questions"
+
 import './index.css';
 
 const QuestionIndex = () => {
@@ -11,9 +15,9 @@ const QuestionIndex = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [order, setOrder] = useState("Newest");
-  const [query, setQuery] = useQueryParam('query', StringParam);
-  const questions = useSelector(state => orderQuestions(Object.values(state.questions), order));
-  
+  const questions = useSelector(getQuestions).slice();
+  const [page, setPage] = useQueryParam('page', StringParam);
+  const [totalPages, setTotalPages] = useState(1);
 
   const handleClick = () => {
     if (sessionUser) {
@@ -23,13 +27,21 @@ const QuestionIndex = () => {
     }
   }
 
-//   useEffect(() => {
-//     dispatch(clearQuestions());
-//     //dispatch(fetchQuestions({ page, search, order }))
-//     //     .catch(() => {
-//     //         history.push("/404");
-//     //     });
-//    }, []);
+  useEffect(() => {
+    if (page === undefined || page === "undefined")
+      setPage(1);
+
+    dispatch(clearQuestions());
+    dispatch(fetchQuestions(page))
+      .catch(() => {
+          history.push("/404");
+      });
+  }, []);
+
+  useEffect(() => {
+    if (questions.length > 0)
+      setTotalPages(questions[0].totalPages)
+  }, [questions])
 
   function orderQuestions(questions, order) {
     if (questions) {
@@ -58,11 +70,26 @@ const QuestionIndex = () => {
     ))
   );
 
+  const handleChangePage = (currentPage) => {
+    setPage(parseInt(currentPage));
+    dispatch(fetchQuestions(page))
+      .catch(() => {
+        history.push("/404");
+    });
+
+    if (questions.length > 0)
+      setTotalPages(questions[0].totalPages)
+  };
+
+  const handleChangeOrder = (order) => {
+    setOrder(order);
+  }
+
   return (
     <div className="question-index">
       <div className="question-index-header">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <h1>All {questions.length} Questions</h1>
+          <h1>All Questions</h1>
           <button onClick={handleClick} className="question-index-button">Ask Question</button>
         </div>
         <div className="filter-buttons">
@@ -70,7 +97,7 @@ const QuestionIndex = () => {
             <button
               key={opt}
               className={order === opt ? "dark-button" : "light-button"}
-              onClick={() => setOrder(opt)}
+              onClick={() => handleChangeOrder(opt)}
               style={{height:"39.59px", float:"right", marginTop:"5px"}}
             >
               {opt}
@@ -79,6 +106,7 @@ const QuestionIndex = () => {
         </div>
       </div>
       {mapQuestions()}
+      <Pagination page={parseInt(page)} pages={totalPages} handleChangePage={handleChangePage} />
     </div>
   );
 };
