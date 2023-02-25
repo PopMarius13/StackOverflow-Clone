@@ -17,6 +17,7 @@ const QuestionIndex = () => {
   const [order, setOrder] = useState("Newest");
   const questions = useSelector(getQuestions).slice();
   const [page, setPage] = useQueryParam('page', StringParam);
+  const [search, setSearch] = useQueryParam('search', StringParam);
   const [totalPages, setTotalPages] = useState(1);
 
   const handleClick = () => {
@@ -32,37 +33,16 @@ const QuestionIndex = () => {
       setPage(1);
 
     dispatch(clearQuestions());
-    dispatch(fetchQuestions(page, order))
+    dispatch(fetchQuestions(page, order, search))
       .catch(() => {
           history.push("/404");
       });
-  }, []);
+  }, [search]);
 
   useEffect(() => {
     if (questions.length > 0)
       setTotalPages(questions[0].totalPages)
   }, [questions])
-
-  function orderQuestions(questions, order) {
-    if (questions) {
-      const orderFunc = (a, b) => {
-        switch (order) {
-          case "Newest":
-            return new Date(b.createdAt) - new Date(a.createdAt);
-          case "Oldest":
-            return new Date(a.createdAt) - new Date(b.createdAt);
-          case "Most Answered":
-            return b.answerCount - a.answerCount;
-          case "Least Answered":
-            return a.answerCount - b.answerCount;
-          default:
-            return 0;
-        }
-      };
-      return questions.sort(orderFunc);
-    }
-    return questions;
-  };
 
   const mapQuestions = () => (
     questions.map(question => (
@@ -72,7 +52,7 @@ const QuestionIndex = () => {
 
   const handleChangePage = (currentPage) => {
     setPage(parseInt(currentPage));
-    dispatch(fetchQuestions(currentPage, order))
+    dispatch(fetchQuestions(currentPage, order, search))
       .catch(() => {
         history.push("/404");
     });
@@ -80,7 +60,8 @@ const QuestionIndex = () => {
 
   const handleChangeOrder = (order) => {
     setOrder(order);
-    dispatch(fetchQuestions(page, order))
+    setPage(1)
+    dispatch(fetchQuestions(1, order, search))
       .catch(() => {
         history.push("/404");
     });

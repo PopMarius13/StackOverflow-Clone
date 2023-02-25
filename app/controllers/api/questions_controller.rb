@@ -1,6 +1,13 @@
 class Api::QuestionsController < ApplicationController
   def index
-    @questions = Question.all
+    #search
+    if params[:search].present? && params[:search] != "undefined"
+      @questions = search_questions(params[:search])
+    else
+      @questions = Question.all
+    end
+
+    # metadata questions
     @tags = Hash.new
     @questions.each do |question|
       taggings = Tagging.where(question_id: question.id)
@@ -109,5 +116,13 @@ class Api::QuestionsController < ApplicationController
     else
       @questions = @questions.order(:created_at)
     end
+  end
+
+  def search_questions(search)
+    words = search.split(' ')
+    if words.length > 0
+      questions = Question.where('title LIKE ?', "%#{words.join('%')}%")
+    end
+    questions
   end
 end
