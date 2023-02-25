@@ -1,13 +1,10 @@
-import React from "react";
 import './index.css'
 
-
 const TagComponent = ({tag}) => {
-
     return (
-        <a href="#" className="tag-item">
+        <div className="tag-item">
           {tag.name}
-        </a>
+        </div>
     )
      
 }

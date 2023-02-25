@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LeftSidebar from "../LeftSidebarComponent";
 import './index.css'
 import { getTags, fetchTags } from "../../store/tags";
-import TagsComponent from "./Tags"
+import TagsComponent from "./tags"
 
 const TagIndexComponent = () => {
     const dispatch = useDispatch();
@@ -14,10 +14,8 @@ const TagIndexComponent = () => {
     }, [])
     return (
         <>
-            <div className="page-content">
-                <LeftSidebar/>
+            <div className="tag-index">
                 <TagsComponent tags={tags} />
-
             </div>
         </>
     )

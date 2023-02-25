@@ -51,7 +51,6 @@ export const updateTag = tag => async dispatch => {
     dispatch(receiveTag(data));
   };
 
-
 const tagsReducer = (state= {}, action) => {
     Object.freeze(state);
     const nextState = {...state};
@@ -70,4 +69,3 @@ const tagsReducer = (state= {}, action) => {
 };
 
 export default tagsReducer;
-

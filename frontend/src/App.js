@@ -10,14 +10,17 @@ import QuestionShow from "./components/QuestionShowComponent";
 import QuestionIndex from "./components/QuestionIndexComponent";
 import QuestionForm from "./components/QuestionFormComponent";
 import TagIndexComponent from "./components/TagIndexComponent";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "./store/users";
 import QuestionEditForm from "./components/QuestionEditFormComponent";
 import { fetchQuestions } from "./store/questions";
 import AnswerEditForm from "./components/AnswerEditFormComponent";
 import { fetchAnswers } from "./store/answers";
+import LeftSidebar from "./components/LeftSidebarComponent";
+import Footer from "./components/Footer";
 
 function App() {
+  const sessionUser = useSelector(state => state.session.user);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchQuestions());
@@ -28,9 +31,10 @@ function App() {
   return (
     <>
       <Navbar />
+      <div id="page-content">
         <Switch>
-
         <Route exact path="/">
+              {sessionUser ? <LeftSidebar/> : ""}
               <SplashPage />
         </Route>
 
@@ -51,7 +55,8 @@ function App() {
           </Route>
 
           <Route exact path="/questions">
-              <QuestionIndex/>
+            <LeftSidebar/>
+            <QuestionIndex/>
           </Route>
 
           <Route exact path="/questions/ask">
@@ -59,6 +64,7 @@ function App() {
           </Route>
 
           <Route exact path="/questions/:questionId">
+              <LeftSidebar />
               <QuestionShow/>
           </Route>
 
@@ -67,14 +73,16 @@ function App() {
           </Route>
 
           <Route exact path="/tags">
+              <LeftSidebar/>
               <TagIndexComponent/>
           </Route>
 
           <Route exact path="/answers/:answerId/edit">
               <AnswerEditForm/>
-          </Route>
-            
+          </Route>     
       </Switch>
+      </div>
+      <Footer/>
     </>
   );
 }

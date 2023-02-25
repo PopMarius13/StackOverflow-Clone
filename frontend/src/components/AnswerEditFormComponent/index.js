@@ -11,19 +11,6 @@ const AnswerEditForm = () => {
     const answer = useSelector(getAnswer(answerId));
     const [description, setDescription] = useState("");
 
-    useEffect(() => {
-        if (answer) {
-            setDescription(answer.description);
-        }
-    }, [answer]);
-
-    const question = useSelector(state => {
-        if(answer) {
-            return state.questions[answer.questionId]
-        }
-        return null;
-    })
-
     if(!sessionUser) history.push('/login');
 
     const handleSubmit=(e)=>{
@@ -45,8 +32,8 @@ return(
             <div className='header'>
                 <div className="headline">Edit a public answer</div>
             </div>
-            <div className="question-and-draft">
-                <div>{question?.title}</div>
+            <div>
+                <div style={{marginBottom:"5px"}}>Question: {answer?.title}</div>
                 <form id="question-form">
                     <div className="body-box">
                         <textarea onChange={e => setDescription(e.target.value)} value={description}>

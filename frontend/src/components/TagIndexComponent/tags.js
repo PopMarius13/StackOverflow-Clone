@@ -1,12 +1,9 @@
 import React from "react";
-import LeftSidebar from "../LeftSidebarComponent";
 import './index.css'
-import TagComponent from "./Tag";
+import TagComponent from "./tag";
 
 
 const TagsComponent = ({tags}) => {
-
-
     return (
         <div className="tags-list">
           {tags ? tags.map(tag => (

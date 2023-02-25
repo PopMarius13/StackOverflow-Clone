@@ -2,56 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { deleteQuestion, getQuestion, fetchQuestions } from "../../store/questions";
-import LeftSidebar from "../LeftSidebarComponent";
 import "./index.css";
 import moment from "moment";
 import AnswerForm from "../AnswerFormComponent";
-import Footer from "../Footer";
-import { getAnswers } from "../../store/answers";
 import AnswerIndex from "../AnswerIndexComponent";
 import Vote from "../VoteComponent";
-import { getUsers } from "../../store/users";
-import TagsComponent from "../TagIndexComponent/Tags.js"
+import TagsComponent from "../TagIndexComponent/tags.js"
 
 const QuestionShow = () => {
   window.scrollTo(0, 0);
   const dispatch = useDispatch();
   const history = useHistory();
-  const sessionUser = useSelector((state) => state.session.user);
   const { questionId } = useParams();
+  const sessionUser = useSelector((state) => state.session.user);
   const question = useSelector(getQuestion(questionId));
-  const users = useSelector(getUsers).slice();
-  const [displayName, setDisplayName] = useState();
-  const filteredAnswers = [];
-  const answers = useSelector(getAnswers).slice();
-
-  //     answers.filter(answer=>
-  // if (parseInt(answer.questionId)===(parseInt.questionId))
-  // filteredAnswerspushanswer
-
-  answers.filter((answer) => {
-    if (parseInt(answer.questionId) === parseInt.questionId) {
-      filteredAnswers.push(answer);
-    }
-  });
-
-  // useEffect=>
-  // forconstkeyvalueofObjectentriesusers
-  // ifvalueid===questionauthorId
-  // setDisplayNamevaluedisplayName
-  // question
-
-  useEffect(() => {
-    for (const [key, value] of Object.entries(users)) {
-      if (value.id === question?.authorId) {
-        setDisplayName(value.displayName);
-      }
-    }
-  }, [question]);
-
-  useEffect(() => {
-    dispatch(fetchQuestions())
-  },[])
 
   const handleClick = (e) => {
     if (sessionUser) {
@@ -73,8 +37,6 @@ const QuestionShow = () => {
   if (question) {
     return (
       <>
-        <div className="question-show-container">
-          <LeftSidebar />
           <div className="question-show-content">
             <div className="title-and-button">
               <h1 className="question-title">{question.title}</h1>
@@ -88,7 +50,7 @@ const QuestionShow = () => {
             <ul className="stats">
               <li>
                 Asked <span>{moment(question.createdAt).fromNow()}</span> by{" "}
-                <span className="displayName">{displayName}</span>
+                <span className="displayName">{question.author}</span>
               </li>
               <li></li>
             </ul>
@@ -116,8 +78,7 @@ const QuestionShow = () => {
             ) : (
               ""
             )}
-
-            <div className="answer-count">{filteredAnswers.length} Answers</div>
+            <div className="answer-count">{question.answerCount} answer{question.answerCount === 1 ? "" : "s"}</div>
             <AnswerIndex />
             {sessionUser ? <AnswerForm questionId={questionId} /> : ""}
             {sessionUser ? (
@@ -127,9 +88,7 @@ const QuestionShow = () => {
                 Please <a href="/login">login</a> to answer
               </div>
             )}
-          </div>
         </div>
-        <Footer />
       </>
     );
   }

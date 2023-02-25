@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { fetchAnswers } from "../../store/answers";
 import csrfFetch from "../../store/csrf";
 import './index.css'
@@ -9,7 +8,6 @@ const AnswerForm = ({questionId}) => {
     const dispatch = useDispatch();
     const [description, setDescription] = useState();
     const author = useSelector(state => state.session.user);   
-    const [errors, setErrors] = useState();
 
     const handleClick = async e => {
         e.preventDefault();

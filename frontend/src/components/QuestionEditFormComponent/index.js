@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {  useHistory, useParams } from "react-router-dom";
 import { getQuestion, updateQuestion, fetchQuestions } from "../../store/questions";
@@ -9,7 +9,7 @@ const QuestionEditForm = () => {
     const {questionId} = useParams();
     const [tags, setTags] = useState([]);
     const sessionUser = useSelector(state => state.session.user);
-    let question = useSelector(getQuestion(questionId));
+    const question = useSelector(getQuestion(questionId));
     const now = new Date();
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
@@ -44,7 +44,7 @@ const QuestionEditForm = () => {
 
     const handleKeyDown = (e) => {
         if(e.code !== 'Space') return
-        const value = e.target.value;
+        const value = e.target.value.trim();
         if(!value.trim()) return
         setTags([...tags, value])
         e.target.value = '';

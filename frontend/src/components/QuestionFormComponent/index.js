@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import csrfFetch from "../../store/csrf";
 import { fetchQuestions } from "../../store/questions";
 import './index.css'
@@ -11,7 +11,6 @@ const QuestionForm = () => {
     const [body, setBody] = useState();
     const [tags, setTags] = useState([]);
     const author = useSelector(state => state.session.user);   
-    const [errors, setErrors] = useState();
     const history = useHistory();
 
     const dispatch = useDispatch();
@@ -39,7 +38,7 @@ const QuestionForm = () => {
 
     const handleKeyDown = (e) => {
         if(e.code !== 'Space') return
-        const value = e.target.value;
+        const value = e.target.value.trim();
         if(!value.trim()) return
         setTags([...tags, value])
         e.target.value = '';

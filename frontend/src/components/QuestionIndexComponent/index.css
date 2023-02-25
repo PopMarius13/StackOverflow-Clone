@@ -1,21 +1,15 @@
-.page-content{
-    display: flex;
-    justify-content: center;
-    height: 100%;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
 .question-index{
     padding: 0px 0 24px 0px;
     border-left:1px solid #E4E6E7;
+    width: 783px;
+    min-height: 100%;
 }
 
 .question-index-header{
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     height: 100px;
     padding-left: 15px;
+    padding-top: 15px;
     border-bottom:1px solid #E4E6E7;
     border-left:1px solid #E4E6E7;
 }
@@ -45,6 +39,9 @@
     padding-left: 15px;
 }
 
-html, body, #root, .App {
-	height: 100%;
+.dark-button{
+    background-color: #e3e6e8;
+}
+.light-button{
+    background-color: white;
 }

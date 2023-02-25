@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { fetchVotes, getVotes, makeVote, downVote } from "../../store/vote";
+import { useDispatch } from "react-redux";
+import { makeVote, downVote } from "../../store/votes";
 import { ReactComponent as GrayUpArrow } from './svgs/gray-up-arrow.svg';
 import { ReactComponent as OrangeUpArrow } from './svgs/orange-up-arrow.svg';
 import { ReactComponent as GrayDownArrow } from './svgs/gray-down-arrow.svg';
@@ -34,13 +34,16 @@ const Vote = ({post, sessionUser, isAnswer, dispatchPost}) => {
 
 
     const handleClickGray = (bool) => {
-        if(sessionUser.id === post?.authorId || sessionUser.id === post?.answererId) {return}
         if(!sessionUser){return alert("You must be logged in to vote")}
+
+        if(sessionUser.id === post?.authorId || (isAnswer && sessionUser.id === post?.answererId)) {
+            return alert("You cannot vote on your own post")
+        }
         const has_user_voted = voters.includes(sessionUser.id)
         const user_id = sessionUser.id
 
         if(has_user_voted) {
-            for (const v of Object.values(votes)) {
+            for (const v of Object.values(votes || {})) {
                 if(v.voterId === sessionUser.id) {
                     dispatch(downVote(v.id, dispatchPost))
                 }
@@ -60,11 +63,11 @@ const Vote = ({post, sessionUser, isAnswer, dispatchPost}) => {
 
 
     const handleClickOrange = (bool) => {
-        if(sessionUser.id === post?.authorId || sessionUser.id === post?.answererId) {return}
-        if(!sessionUser){return alert("You must be logged in to vote")}
+        // if(sessionUser.id === post?.authorId || sessionUser.id === post?.answererId) {return}
+        // if(!sessionUser){return alert("You must be logged in to vote")}
         const user_id = sessionUser.id
 
-        for (const v of Object.values(votes)) {
+        for (const v of Object.values(votes || {})) {
             if(v.voterId === sessionUser.id) {
                 dispatch(downVote(v.id, dispatchPost))
             }
@@ -88,7 +91,5 @@ const Vote = ({post, sessionUser, isAnswer, dispatchPost}) => {
         </div>
     )
 }
-
-
 
 export default Vote;

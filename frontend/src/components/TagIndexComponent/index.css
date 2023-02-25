@@ -1,17 +1,24 @@
 .tags-list {
-  display: flex;
-  justify-items: space-between;
-}
+    display: flex;
+    justify-items: space-between;
+    width: 783px;
+    height: 100%;
+  }
+  
+  .tax-index{
+    padding: 0px 0 24px 0px;
+    background-color: blue;
+  }
 
-.tags-item{
-  display: inline-table;
-  width: 50px;
-  margin-right: 10px;
-  margin-top: 15px;
-}
-
-.tag-item {
-  color: #39739d;
-  background-color: #e1ecf4;
-  border-color: #00000000;
-}
+  .tags-item{
+    display: inline-table;
+    width: 50px;
+    margin-right: 10px;
+    margin-top: 15px;
+  }
+  
+  .tag-item {
+    color: #39739d;
+    background-color: #e1ecf4;
+    border-color: #00000000;
+  }
