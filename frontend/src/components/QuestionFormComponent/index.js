@@ -33,7 +33,7 @@ const QuestionForm = () => {
             let data = await res.json();
             dispatch(fetchQuestions());
             history.push(`${data.question.id}`);
-        } 
+        }
     };
 
     const handleKeyDown = (e) => {

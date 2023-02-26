@@ -24,7 +24,7 @@ export const clearQuestions = () => ({
     type: CLEAR_QUESTIONS
 });
 
-export const getQuestion = questionId => ({questions}) => questions ? questions[questionId] : null;
+export const getQuestion = questionId => ({questions}) => questions ? Object.values(questions).find(question => question.id === parseInt(questionId)) : null;
 export const getQuestions = ({questions}) => questions ? Object.values(questions) : [];
 
 export const fetchQuestion = questionId => async dispatch => {
@@ -33,8 +33,15 @@ export const fetchQuestion = questionId => async dispatch => {
     dispatch(receiveQuestion(data.question));
 };
 
-export const fetchQuestions = () => async dispatch => {
-    const res = await csrfFetch(`/api/questions`);
+export const fetchQuestions = (page, order, search, tag) => async dispatch => {
+    const res = await csrfFetch(`/api/questions?page=${page}&&order=${order}&&search=${search}&&tag=${tag}`);
+    const data = await res.json();
+    dispatch(receiveQuestions(data));
+};
+
+
+export const fetchAllQuestions = () => async dispatch => {
+    const res = await csrfFetch(`/api/questions?all=true`);
     const data = await res.json();
     dispatch(receiveQuestions(data));
 };
@@ -61,7 +68,8 @@ const questionsReducer = (state= {}, action) => {
     const nextState = {...state};
     switch (action.type) {
         case RECEIVE_QUESTIONS:
-            return {...state, ...action.questions};
+            console.log(action.questions)
+            return {...action.questions};
         case RECEIVE_QUESTION:
             nextState[action.question.id] = action.question;
             return nextState;
