@@ -1,27 +1,27 @@
 class Api::QuestionsController < ApplicationController
   def index
-    #search
-    if params[:search].present? && params[:search] != "undefined"
-      @questions = search_questions(params[:search])
-    else
+    @total_pages = 0
+    if params[:all].present? && params[:all] == "true"
       @questions = Question.all
+
+      # metadata questions
+      metadata_question
+    else
+      #search and tag
+      @questions = search_questions(params[:search], params[:tag])
+
+      # metadata questions
+      metadata_question
+
+      # order
+      sort_question(params[:order])
+
+      # pagination
+      page = 1
+      page = params[:page].to_i unless params[:page] == "undefined" || params[:page] == "null"
+      @questions = @questions.paginate(page: page, per_page: 15)
+      @total_pages = @questions.total_pages
     end
-
-    # metadata questions
-    @tags = Hash.new
-    @questions.each do |question|
-      taggings = Tagging.where(question_id: question.id)
-      tags = Tag.where(id: taggings.pluck(:tag_id))
-      @tags[question.id] = tags
-    end
-
-    # order
-    sort_question(params[:order])
-
-    # pagination
-    page = 1
-    page = params[:page].to_i unless params[:page] == "undefined" || params[:page] == "null"
-    @questions = @questions.paginate(page: page, per_page: 15)
     render :index
   end
 
@@ -100,9 +100,9 @@ class Api::QuestionsController < ApplicationController
   def sort_question(type)
     case type
     when "Newest"
-      @questions = @questions.order(:created_at)
-    when "Oldest"
       @questions = @questions.order(created_at: :desc)
+    when "Oldest"
+      @questions = @questions.order(:created_at)
     when "MostAnswered"
       @questions = @questions.left_joins(:answers)
         .select('questions.*, COUNT(answers.id) AS answer_count')
@@ -118,11 +118,34 @@ class Api::QuestionsController < ApplicationController
     end
   end
 
-  def search_questions(search)
-    words = search.split(' ')
-    if words.length > 0
-      questions = Question.where('title LIKE ?', "%#{words.join('%')}%")
+  def search_questions(search, tag)
+    if params[:tag].present? && params[:tag] != "undefined"
+      words = ''
+      words = search.split(' ') if params[:search].present? && params[:search] != "undefined"
+
+      if words.length > 0
+        questions = Question.joins(:tags).where(tags: {name: tag}).where('title LIKE ?', "%#{words.join('%')}%")
+      else
+        questions = Question.joins(:tags).where(tags: {name: tag})
+      end
+    elsif params[:search].present? && params[:search] != "undefined"
+      words = search.split(' ')
+      if words.length > 0
+        questions = Question.where('title LIKE ?', "%#{words.join('%')}%")
+      end
+    else
+      questions = Question.all
     end
+
     questions
+  end
+
+  def metadata_question
+    @tags = Hash.new
+    @questions.each do |question|
+      taggings = Tagging.where(question_id: question.id)
+      tags = Tag.where(id: taggings.pluck(:tag_id))
+      @tags[question.id] = tags
+    end
   end
 end

@@ -18,6 +18,7 @@ const QuestionIndex = () => {
   const questions = useSelector(getQuestions).slice();
   const [page, setPage] = useQueryParam('page', StringParam);
   const [search, setSearch] = useQueryParam('search', StringParam);
+  const [tag, setTag] = useQueryParam('tag', StringParam);
   const [totalPages, setTotalPages] = useState(1);
 
   const handleClick = () => {
@@ -33,11 +34,11 @@ const QuestionIndex = () => {
       setPage(1);
 
     dispatch(clearQuestions());
-    dispatch(fetchQuestions(page, order, search))
+    dispatch(fetchQuestions(page, order, search, tag))
       .catch(() => {
           history.push("/404");
       });
-  }, [search]);
+  }, [search, tag]);
 
   useEffect(() => {
     if (questions.length > 0)
@@ -52,7 +53,7 @@ const QuestionIndex = () => {
 
   const handleChangePage = (currentPage) => {
     setPage(parseInt(currentPage));
-    dispatch(fetchQuestions(currentPage, order, search))
+    dispatch(fetchQuestions(currentPage, order, search, tag))
       .catch(() => {
         history.push("/404");
     });
@@ -61,7 +62,7 @@ const QuestionIndex = () => {
   const handleChangeOrder = (order) => {
     setOrder(order);
     setPage(1)
-    dispatch(fetchQuestions(1, order, search))
+    dispatch(fetchQuestions(1, order, search, tag))
       .catch(() => {
         history.push("/404");
     });
@@ -71,7 +72,10 @@ const QuestionIndex = () => {
     <div className="question-index">
       <div className="question-index-header">
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <h1>All Questions</h1>
+          <div>
+            <h1>{tag !== undefined ? `Questions tagged [${tag}]` : (search !== undefined ? `Search Results` : 'All Questions')}</h1>
+            {search !== undefined ? <h4 style={{marginTop: '5px', color: 'gray'}}>Result for {search}</h4> : <h4></h4>}
+          </div>
           <button onClick={handleClick} className="question-index-button">Ask Question</button>
         </div>
         <div className="filter-buttons">
